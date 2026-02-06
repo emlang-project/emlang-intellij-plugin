@@ -45,7 +45,7 @@ class EmlangRunner {
         }
 
         return try {
-            val command = buildCommand(settings.binaryPath, settings.configPath, filePath)
+            val command = buildCommand(settings.binaryPath, filePath)
             executeCommand(command, File(filePath).parentFile)
         } catch (e: Exception) {
             RunResult(
@@ -56,16 +56,8 @@ class EmlangRunner {
         }
     }
 
-    private fun buildCommand(binaryPath: String, configPath: String, filePath: String): List<String> {
-        return buildList {
-            add(binaryPath)
-            if (configPath.isNotBlank()) {
-                add("-c")
-                add(configPath)
-            }
-            add("diagram")
-            add(filePath)
-        }
+    private fun buildCommand(binaryPath: String, filePath: String): List<String> {
+        return listOf(binaryPath, "diagram", filePath)
     }
 
     private fun executeCommand(command: List<String>, workingDir: File?): RunResult {

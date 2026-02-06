@@ -29,9 +29,9 @@
                 language="Emlang"
                 extensions="emlang"/>
 
-        <!-- File Type Detector for yaml/yml files starting with slices: -->
-        <fileTypeDetector
-                implementation="com.emlang.intellij.filetype.EmlangFileTypeDetector"/>
+        <!-- File Type Overrider for yaml/yml files starting with slices: -->
+        <fileTypeOverrider
+                implementation="com.emlang.intellij.filetype.EmlangFileTypeOverrider"/>
 
         <!-- Editor Provider -->
         <fileEditorProvider

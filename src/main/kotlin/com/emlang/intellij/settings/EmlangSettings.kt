@@ -17,7 +17,7 @@ class EmlangSettings : PersistentStateComponent<EmlangSettings.State> {
 
     class State {
         var binaryPath: String = ""
-        var configPath: String = ""
+
         var autoRefresh: Boolean = true
         var refreshDelayMs: Int = 500
     }
