@@ -1,0 +1,50 @@
+<idea-plugin>
+    <id>com.emlang.intellij</id>
+    <name>Emlang Editor</name>
+    <vendor url="https://github.com/emlang-project/emlang-intellij-plugin">The Emlang Project</vendor>
+
+    <description><![CDATA[
+    <p>Emlang is a text-based language for Event Modeling that lets you write event models in YAML and generate HTML diagrams.</p>
+
+    <h3>Features</h3>
+    <ul>
+        <li>Automatic detection of Emlang files (.yaml, .yml, .emlang starting with "slices:")</li>
+        <li>Three viewing modes: Editor only, Split view, Preview only</li>
+        <li>Live preview updates as you edit</li>
+        <li>Configurable refresh delay</li>
+    </ul>
+
+    <h3>Requirements</h3>
+    <p>The <code>emlang</code> binary must be installed and configured in Settings > Tools > Emlang.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- File Type -->
+        <fileType
+                name="Emlang"
+                implementationClass="com.emlang.intellij.filetype.EmlangFileType"
+                fieldName="INSTANCE"
+                language="Emlang"
+                extensions="emlang"/>
+
+        <!-- File Type Detector for yaml/yml files starting with slices: -->
+        <fileTypeDetector
+                implementation="com.emlang.intellij.filetype.EmlangFileTypeDetector"/>
+
+        <!-- Editor Provider -->
+        <fileEditorProvider
+                implementation="com.emlang.intellij.editor.EmlangEditorProvider"/>
+
+        <!-- Settings -->
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.emlang.intellij.settings.EmlangSettingsConfigurable"
+                id="com.emlang.intellij.settings.EmlangSettingsConfigurable"
+                displayName="Emlang"/>
+
+        <applicationService
+                serviceImplementation="com.emlang.intellij.settings.EmlangSettings"/>
+    </extensions>
+</idea-plugin>

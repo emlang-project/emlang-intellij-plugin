@@ -1,0 +1,23 @@
+# IDE
+.idea/
+.intellijPlatform/
+*.iml
+
+# Claude
+.claude/
+
+# Gradle
+.gradle/
+build/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# Local configuration
+local.properties
+
+# Logs
+*.log
