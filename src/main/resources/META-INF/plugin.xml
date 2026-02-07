@@ -19,6 +19,7 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- File Type -->
@@ -26,7 +27,7 @@
                 name="Emlang"
                 implementationClass="com.emlang.intellij.filetype.EmlangFileType"
                 fieldName="INSTANCE"
-                language="Emlang"
+                language="yaml"
                 extensions="emlang"/>
 
         <!-- File Type Overrider for yaml/yml files starting with slices: -->

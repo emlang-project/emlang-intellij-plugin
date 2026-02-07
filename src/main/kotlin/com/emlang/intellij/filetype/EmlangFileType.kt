@@ -3,12 +3,10 @@ package com.emlang.intellij.filetype
 import com.emlang.intellij.EmlangBundle
 import com.emlang.intellij.EmlangIcons
 import com.intellij.openapi.fileTypes.LanguageFileType
-import com.intellij.lang.Language
+import org.jetbrains.yaml.YAMLLanguage
 import javax.swing.Icon
 
-object EmlangLanguage : Language("Emlang")
-
-class EmlangFileType private constructor() : LanguageFileType(EmlangLanguage) {
+class EmlangFileType private constructor() : LanguageFileType(YAMLLanguage.INSTANCE) {
 
     override fun getName(): String = "Emlang"
 

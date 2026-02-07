@@ -18,6 +18,7 @@ dependencies {
     intellijPlatform {
         intellijIdeaCommunity(providers.gradleProperty("platformVersion").get())
         bundledPlugin("com.intellij.java")
+        bundledPlugin("org.jetbrains.plugins.yaml")
     }
 
     testImplementation("junit:junit:4.13.2")

@@ -24,6 +24,8 @@ class EmlangFileTypeOverriderTest {
         `when`(file.extension).thenReturn(extension)
         `when`(file.charset).thenReturn(StandardCharsets.UTF_8)
         `when`(file.inputStream).thenReturn(ByteArrayInputStream(content.toByteArray(StandardCharsets.UTF_8)))
+        `when`(file.isValid).thenReturn(true)
+        `when`(file.isDirectory).thenReturn(false)
         return file
     }
 
@@ -52,6 +54,24 @@ class EmlangFileTypeOverriderTest {
     }
 
     @Test
+    fun `ignores YAML document start separator before slices`() {
+        val file = createMockFile("yaml", "---\nslices:\n  - name: test")
+        assertEquals(EmlangFileType.INSTANCE, overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `ignores YAML document end separator before slices`() {
+        val file = createMockFile("yaml", "...\nslices:\n  - name: test")
+        assertEquals(EmlangFileType.INSTANCE, overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `ignores mix of comments, separators and empty lines before slices`() {
+        val file = createMockFile("yaml", "---\n# comment\n\n...\n---\nslices:\n  - name: test")
+        assertEquals(EmlangFileType.INSTANCE, overrider.getOverriddenFileType(file))
+    }
+
+    @Test
     fun `returns null for yaml file not starting with slices`() {
         val file = createMockFile("yaml", "name: test\nversion: 1.0")
         assertNull(overrider.getOverriddenFileType(file))
@@ -61,6 +81,8 @@ class EmlangFileTypeOverriderTest {
     fun `returns null for non-yaml extension`() {
         val file = mock(VirtualFile::class.java)
         `when`(file.extension).thenReturn("txt")
+        `when`(file.isValid).thenReturn(true)
+        `when`(file.isDirectory).thenReturn(false)
         assertNull(overrider.getOverriddenFileType(file))
     }
 
@@ -68,6 +90,8 @@ class EmlangFileTypeOverriderTest {
     fun `returns null for null extension`() {
         val file = mock(VirtualFile::class.java)
         `when`(file.extension).thenReturn(null)
+        `when`(file.isValid).thenReturn(true)
+        `when`(file.isDirectory).thenReturn(false)
         assertNull(overrider.getOverriddenFileType(file))
     }
 
@@ -85,9 +109,38 @@ class EmlangFileTypeOverriderTest {
 
     @Test
     fun `returns null for emlang extension`() {
-        // .emlang files are handled by direct extension registration, not the overrider
         val file = mock(VirtualFile::class.java)
         `when`(file.extension).thenReturn("emlang")
+        `when`(file.isValid).thenReturn(true)
+        `when`(file.isDirectory).thenReturn(false)
+        assertNull(overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `returns null for invalid file`() {
+        val file = mock(VirtualFile::class.java)
+        `when`(file.isValid).thenReturn(false)
+        `when`(file.isDirectory).thenReturn(false)
+        assertNull(overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `returns null for directory`() {
+        val file = mock(VirtualFile::class.java)
+        `when`(file.isValid).thenReturn(true)
+        `when`(file.isDirectory).thenReturn(true)
+        assertNull(overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `returns null when only comments and no content`() {
+        val file = createMockFile("yaml", "# just a comment\n# another comment")
+        assertNull(overrider.getOverriddenFileType(file))
+    }
+
+    @Test
+    fun `returns null for empty file`() {
+        val file = createMockFile("yaml", "")
         assertNull(overrider.getOverriddenFileType(file))
     }
 }
